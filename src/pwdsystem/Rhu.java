@@ -93,7 +93,11 @@ public class Rhu {
         Pwd pd = new Pwd();
         Rhu rhu = new Rhu();
         
-        pd.addPWD();
+        System.out.println("List of PWD");
+        pd.viewPWD();
+        System.out.print("Enter PWD ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
         System.out.print("Enter PhilHealth ID (xx-xxxxxxxxxx-xx: ");
         String phid = sc.nextLine();
         System.out.print("Enter Barangay: ");
@@ -119,28 +123,51 @@ public class Rhu {
         Scanner sc = new Scanner(System.in);
         config conf = new config();
         Pwd pd = new Pwd();
-        
+        Rhu rhu = new Rhu();
+
         System.out.print("Enter Doctor Full Name: ");
         String dfname = sc.nextLine();
+
         System.out.print("Enter Licence Number: ");
         int ln = sc.nextInt();
         sc.nextLine();
         System.out.print("Enter Doctor Specialization: ");
         String ds = sc.nextLine();
         System.out.print("Enter Contact Number: ");
-        int cn = sc.nextInt();;
-
+        int cn = sc.nextInt();
+        sc.nextLine();
         System.out.print("Assign Patient? (yes/no): ");
         String res = sc.nextLine();
-        while(res.equalsIgnoreCase("yes")){
-            
-            System.out.print("Enter Doctor ID: ");
+
+        int pid = -1; 
+
+        while (res.equalsIgnoreCase("yes")) {
+            pd.viewPWD();
+            System.out.print("Enter Patient ID: ");
+            pid = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Assign another patient? (yes/no): ");
+            res = sc.nextLine();
         }
-            int pid = sc.nextInt();
-        
-        String sql = "INSERT INTO rhu (dr_name, dr_licensenum, dr_spec, dr_cnum, dr_assp) VALUES (?, ?, ?, ?, ?)";
-        conf.addRecord(sql, dfname, ln, ds, cn, pid);
-    }
+
+        System.out.print("View Full details of PWD? (yes/no): ");
+        String res1 = sc.nextLine();
+
+        while (res1.equalsIgnoreCase("yes")) {
+            rhu.viewFullp();
+            System.out.print("View Full details of PWD again? (yes/no): ");
+            res1 = sc.nextLine(); 
+        }
+
+        // Ensure that pid has a value before passing it to the SQL query
+        if (pid != -1) {
+            String sql = "INSERT INTO rhu (dr_name, dr_licensenum, dr_spec, dr_cnum, dr_assp) VALUES (?, ?, ?, ?, ?)";
+            conf.addRecord(sql, dfname, ln, ds, cn, pid);
+        } else {
+            System.out.println("No patient assigned. Doctor record not added.");
+        }
+     }
     
     public void addApp(){
         Scanner sc = new Scanner(System.in);
